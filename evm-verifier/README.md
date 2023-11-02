@@ -188,10 +188,10 @@ The `MerkleTrie` library is designed to verify standard Ethereum Merkle-Patricia
 
 #### Considerations:
 
-1. **Security and Correctness**: The library must accurately follow the Merkle-Patricia trie specifications for Ethereum. Incorrect implementation can lead to invalid proof verification.
-2. **Efficiency**: The functions should be optimized for gas efficiency since trie operations can be computationally intensive.
-3. **Integration**: Contracts using this library should carefully handle the input and output of these functions, ensuring they align with the broader contract logic.
-4. **Upgradability and Maintenance**: Since this is a crucial library for verifying trie proofs, maintaining its accuracy with Ethereum's evolving specifications is vital.
+**Security and Correctness**: The library must accurately follow the Merkle-Patricia trie specifications for Ethereum. Incorrect implementation can lead to invalid proof verification.
+**Efficiency**: The functions should be optimized for gas efficiency since trie operations can be computationally intensive.
+**Integration**: Contracts using this library should carefully handle the input and output of these functions, ensuring they align with the broader contract logic.
+**Upgradability and Maintenance**: Since this is a crucial library for verifying trie proofs, maintaining its accuracy with Ethereum's evolving specifications is vital.
 
 
 ---

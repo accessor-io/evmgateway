@@ -11,11 +11,8 @@ The `EVMFetchTarget` contract serves as a callback handler for CCIP-Read respons
 #### EVMFetchTarget.sol Contract Structure:
 
 - **Inheritance**: Inherits from Solidity's `abstract` keyword, meaning it cannot be instantiated on its own but must be inherited by another contract.
-
 - **Libraries**: Uses the `Address` library from OpenZeppelin for address utility functions.
-
 - **Error**: Defines a custom error `ResponseLengthMismatch` with parameters `actual` and `expected` for handling length mismatches in responses.
-
 - **Function**: `getStorageSlotsCallback(bytes calldata response, bytes calldata extradata) external`
     - **Parameters**: 
         - `response` (bytes calldata): The response from the CCIP-Read.
@@ -31,18 +28,11 @@ The `EVMFetchTarget` contract serves as a callback handler for CCIP-Read respons
 #### Considerations and Best Practices:
 
 - **Abstract Nature**: Ensure that the contract inheriting `EVMFetchTarget` implements all necessary logic to work with `EVMFetcher`.
-
 - **Error Handling**: The custom error `ResponseLengthMismatch` is a good practice for clear and gas-efficient error reporting.
-
 - **Solidity Assembly**: The use of Solidity assembly for handling the return value should be approached with caution due to its complexity and potential security implications.
-
 - **Dynamic Function Calls**: The contract uses dynamic function calls with `functionCall`. Ensure that the `callback` function is secure and does not introduce vulnerabilities.
-
 - **Data Decoding**: The decoding of `response` and `extradata` is crucial. Ensure that the data is structured correctly to prevent decoding errors.
-
 - **Security**: Review all external calls and dynamic function invocations for potential reentrancy attacks or other security vulnerabilities.
-
-- **Gas Optimization**: Check the gas usage of the contract, especially considering the dynamic function calls and assembly code.
 
 ---
 
@@ -59,33 +49,23 @@ The `EVMFetcher` contract is a Solidity library that facilitates requesting stor
 - **Structs**: Defines a struct `EVMFetchRequest` to encapsulate request data.
 - **Functions**: Provides a set of functions for constructing and executing fetch requests.
 
-#### Key Functions and Operations:
+#### Key Functions
 
 - **`newFetchRequest`**: Initializes a new fetch request with a given verifier and target address.
-
 - **`getStatic` and `getDynamic`**: Start describing new fetch requests for static or dynamic storage slots.
-
 - **`element`**: Overloaded for various types, adds an element to the current path for slot calculation.
-
 - **`ref`**: Adds a reference to a previous fetch in the current path.
-
 - **`fetch`**: Initiates the fetch request, using CCIP-Read to get storage slots. It terminates execution and expects a callback with results.
-
 - **`_addConstant`**: Private function to add a constant to the request.
-
 - **`_addOperation`**: Private function to add an operation to the command in the request.
 
 
-#### Considerations and Best Practices:
+#### Considerations:
 
 - **Usage**: As a library, it should be included in other contracts using the `using EVMFetcher for EVMFetchRequest;` directive.
-
 - **Error Handling**: The custom errors provide clear feedback on failure scenarios, which is a good practice.
-
 - **Operation Limits**: The constants `MAX_COMMANDS` and `MAX_CONSTANTS` impose limits on the number of commands and constants. Ensure these limits are suitable for your use case.
-
 - **Dynamic Storage Handling**: The library supports dynamic storage slot calculations, which can be complex. Ensure the paths are correctly constructed.
-
 - **Security**: Since this library interacts with external contracts and uses dynamic data, ensure that all security implications are considered, especially in the context of the contracts that use this library.
 
 ---    
@@ -110,40 +90,23 @@ The `EVMProofHelper` contract is a Solidity library designed to assist with the 
 #### Key Functions and Operations:
 
 - **`getStorageRoot`**: Retrieves the storage root from a provided state root and witness for a specified target address.
-
 - **`getSingleStorageProof`**: Validates whether a given storage slot is part of the specified storage root.
-
 - **`getFixedValue`**: Retrieves a fixed value from a storage slot.
-
 - **`executeOperation`**: Executes a predefined operation based on constants and values.
-
 - **`computeFirstSlot`**: Computes the first slot for a given command, determining if it is dynamic or static.
-
 - **`getDynamicValue`**: Retrieves dynamic values from storage slots.
-
 - **`getStorageValues`**: Public function that retrieves storage values based on given commands and constants.
 
 
 
 #### Considerations and Best Practices:
 
-- **Usage**: As a library, ensure it is properly included and used in contracts that require storage proof verification.
-
+- **Usage**: Ensure it is properly included and used in contracts that require storage proof verification.
 - **Error Handling**: Custom errors provide meaningful feedback, enhancing the debugging process.
-
 - **Data Types and Encoding**: The contract deals extensively with bytes and RLP encoding. Ensure that the data is correctly encoded and decoded.
-
 - **Storage Proof Verification**: The contract is crucial for verifying storage proofs, particularly in cross-chain or layer-2 scenarios.
-
 - **Security**: Given its critical role in verifying storage data, ensure that all security aspects are thoroughly reviewed and tested.
 
-- **Gas Optimization**: Libraries are generally more gas-efficient, but review the gas usage, especially in the context of complex operations like storage proof verification.
-
-
-
-#### Conclusion:
-
-The `EVMProofHelper` library offers robust functionalities for verifying storage proofs and retrieving storage values on the Ethereum blockchain. It is particularly valuable in complex scenarios involving cross-chain interactions or layer-2 solutions. When integrating this library, prioritize security, data integrity, and efficient handling of bytes and encoding operations. Ensure thorough testing and review, especially considering the library's critical role in validating storage proofs.
 
 ---
 
@@ -162,12 +125,12 @@ The `IEVMVerifier` is an interface in Solidity, defining the structure and expec
 
 #### Key Functions:
 
-1. **`gatewayURLs`**:
+ **`gatewayURLs`**:
    - **Visibility**: `external view`
    - **Returns**: `string[] memory`
    - **Description**: This function is expected to return an array of strings, likely representing URLs. These URLs might be related to gateways or endpoints necessary for the verification process or other related tasks.
 
-2. **`getStorageValues`**:
+ **`getStorageValues`**:
    - **Parameters**:
      - `address target`: The target address for which storage values are to be retrieved.
      - `bytes32[] memory commands`: An array of commands, possibly indicating operations or instructions for retrieving storage values.
@@ -177,18 +140,13 @@ The `IEVMVerifier` is an interface in Solidity, defining the structure and expec
    - **Returns**: `bytes[] memory values`
    - **Description**: This function is designed to retrieve storage values for a given target address based on specified commands, constants, and provided proof. It plays a crucial role in the verification process, ensuring the integrity and validity of storage data.
 
-#### Considerations and Best Practices:
+#### Considerations
 
 - **Implementation**: As an interface, it's crucial to provide concrete implementations of these functions in contracts that inherit from `IEVMVerifier`.
 - **Security**: The implementation should rigorously validate inputs and handle proofs securely.
 - **Use Case**: This interface is likely to be used in scenarios involving storage proof verification, cross-chain communication, or layer-2 solutions.
 - **Data Handling**: Proper handling and interpretation of commands, constants, and proofs are vital for the correct functioning of the implementing contract.
 
-
-
-#### Conclusion:
-
-The `IEVMVerifier` interface sets the foundational structure for contracts that need to verify storage values and interact with gateway URLs. Implementing contracts must provide robust and secure functionalities, ensuring the accurate retrieval and verification of storage data. Given its potential use in complex scenarios, thorough testing and careful consideration of security and data handling are paramount.
 
 ---
 
@@ -208,16 +166,16 @@ The `MerkleTrie` library is designed to verify standard Ethereum Merkle-Patricia
 
 #### Key Components:
 
-1. **Constants**:
+ **Constants**:
    - `TREE_RADIX`: Represents the number of elements per branch node in the trie, set to 16 (hexary trie).
    - `BRANCH_NODE_LENGTH`: Number of elements in a branch node, including one value element.
    - `LEAF_OR_EXTENSION_NODE_LENGTH`: Number of elements in leaf or extension nodes.
    - Prefix constants for different node types.
-
-2. **Structs**:
+     
+**Structs**:
    - `TrieNode`: Represents a node in the trie with encoded and decoded forms.
 
-3. **Core Functions**:
+ **Core Functions**:
    - **`verifyInclusionProof`**: Verifies the inclusion of a key/value pair in the trie using a provided proof and known root.
    - **`get`**: Retrieves the value associated with a given key using the proof and known root.
    - **`_walkNodePath`**: Internal function that walks through a proof using a provided key.
@@ -228,19 +186,12 @@ The `MerkleTrie` library is designed to verify standard Ethereum Merkle-Patricia
    - **`_getSharedNibbleLength`**: Internal utility function that determines the number of nibbles shared between two nibble arrays.
 
 
-
 #### Considerations:
 
 1. **Security and Correctness**: The library must accurately follow the Merkle-Patricia trie specifications for Ethereum. Incorrect implementation can lead to invalid proof verification.
 2. **Efficiency**: The functions should be optimized for gas efficiency since trie operations can be computationally intensive.
 3. **Integration**: Contracts using this library should carefully handle the input and output of these functions, ensuring they align with the broader contract logic.
 4. **Upgradability and Maintenance**: Since this is a crucial library for verifying trie proofs, maintaining its accuracy with Ethereum's evolving specifications is vital.
-
-
-
-#### Conclusion:
-
-The `MerkleTrie` library provides essential functionality for verifying inclusion proofs within Ethereum's Merkle-Patricia trie. Its accurate and efficient implementation is crucial for contracts that rely on proof verification for their operations. Given its foundational role in interacting with Ethereum's state, it requires careful and meticulous development and testing.
 
 
 ---
@@ -261,23 +212,16 @@ The `SecureMerkleTrie` library is a thin wrapper around the `MerkleTrie` library
 
 #### Key Components:
 
-1. **Functions**:
+ **Functions**:
    - **`verifyInclusionProof`**: Verifies a proof that a given key/value pair is present in the Merkle trie, with the key being hashed before verification.
    - **`get`**: Retrieves the value associated with a given key, with the key being hashed before retrieval.
    - **`_getSecureKey`**: Internal function to compute the hashed version of the input key.
 
 
-
 #### Considerations:
 
-1. **Security**: Hashing the keys before storing or verifying them adds an extra layer of security. This practice is standard in Ethereum and helps prevent certain types of attacks.
-2. **Compatibility**: Since Ethereum's state trie hashes input keys, this library ensures compatibility with Ethereum's standard data structures.
-3. **Gas Efficiency**: The additional hashing step will consume more gas. This should be taken into account when designing contracts that use this library.
-4. **Dependency Management**: The library is heavily dependent on the `MerkleTrie` library. Any changes or updates to the `MerkleTrie` library should be carefully reviewed to ensure continued compatibility and correctness.
-
-
-#### Conclusion:
-
-The `SecureMerkleTrie` library is crucial for contracts that interact with Ethereum's state trie, ensuring that keys are hashed in line with Ethereum's standards. It provides a security-enhanced interface for verifying the existence and retrieving the values of trie nodes, making it an important component for contracts requiring secure and standard-compliant trie interactions.
+**Security**: Hashing the keys before storing or verifying them adds an extra layer of security. This practice is standard in Ethereum and helps prevent certain types of attacks.
+**Compatibility**: Since Ethereum's state trie hashes input keys, this library ensures compatibility with Ethereum's standard data structures.
+**Dependency Management**: The library is heavily dependent on the `MerkleTrie` library. Any changes or updates to the `MerkleTrie` library should be carefully reviewed to ensure continued compatibility and correctness.
 
 
